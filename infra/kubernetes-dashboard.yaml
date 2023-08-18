@@ -25,25 +25,4 @@
             allowEmpty: true
         syncOptions:
             - CreateNamespace=true
----
-    apiVersion: networking.k8s.io/v1
-    kind: Ingress
-    metadata:
-        namespace: kubernetes-dashboard
-        name: dashboard
-        annotations:
-        kubernetes.io/ingress.class: "nginx"
-        spec.ingressClassName: nginx
-        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    spec:
-        rules:
-        - host: kd.traefik.me
-        http:
-            paths:
-            - path: "/"
-            pathType: Prefix
-            backend:
-                service:
-                name: kubernetes-dashboard
-                port:
-                    number: 443
+
