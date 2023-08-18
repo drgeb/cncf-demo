@@ -1,0 +1,29 @@
+---
+
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-dashboard
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: kubernetes-dashboard
+    repoURL: https://kubernetes.github.io/dashboard/
+    targetRevision: 7.0.0-alpha0
+    helm:
+      releaseName: kubernetes-dashboard
+      values: |
+          replicaCount: 1
+          # Other values you might want to customize
+  destination:
+    namespace: kubernetes-dashboard # Namespace where you want to deploy the Dashboard
+    server: 'https://kubernetes.default.svc' # Kubernetes API server URL
+  syncPolicy:
+    automated:
+        selfHeal: true
+        prune: true
+        allowEmpty: true
+    syncOptions:
+        - CreateNamespace=true
