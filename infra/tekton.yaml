@@ -1,0 +1,22 @@
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tekton
+spec:
+  project: production
+  source:
+    repoURL: https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+    targetRevision: HEAD
+    path: ""  # Leave it empty to include the entire manifest
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tekton
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=true
