@@ -1,0 +1,24 @@
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: shipwright
+spec:
+  project: production
+  source:
+    repoURL: https://github.com/shipwright-io/build.git
+    targetRevision: v0.11.0  # Replace with the desired revision or branch
+    paths:
+        - release.yaml #./.github/workflows/release.yaml
+        - sample-strategies.yaml #./deploy/crds/shipwright.io_buildstrategies.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: shipwright
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=true
