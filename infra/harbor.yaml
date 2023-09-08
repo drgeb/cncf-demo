@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harbor-deployment
+spec:
+  destination:
+    namespace: harbor
+    server: https://kubernetes.default.svc
+  source:
+    helm:
+      valueFiles:
+        - harbor/values.yaml
+        - harbor/ingress.yaml
+    repoURL: https://helm.goharbor.io
+    path: harbor
+    targetRevision: 1.6.0
+    paths:
+      - harbor/ingress.yaml
+  project: default
+  syncPolicy:
+    automated:
+      prune: true

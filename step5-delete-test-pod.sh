@@ -1,0 +1,1 @@
+kdel pod/test-pod

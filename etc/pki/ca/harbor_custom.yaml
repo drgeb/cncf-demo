@@ -1,0 +1,50 @@
+notary:
+  enabled: false
+expose:
+  type: loadBalancer
+  tls:
+    enabled: true
+    certSource: secret
+    auto:
+      commonName: "harbor.127.0.0.1.traefik.me"
+    secret:
+      secretName: "harbor-secret"
+  ingress:
+    hosts:
+      core: harbor.127.0.0.1.traefik.me
+      notary: harbor.127.0.0.1.traefik.me
+    controller: default
+    annotations:
+      certmanager.k8s.io/cluster-issuer: ca-issuer
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  clusterIP:
+    name: harbor
+    ports:
+      httpPort: 80
+      httpsPort: 443
+      notaryPort: 4443
+  nodePort:
+    name: harbor
+    ports:
+      http:
+        port: 80
+        nodePort: 30002
+      https:
+        port: 443
+        nodePort: 30003
+      notary:
+        port: 4443
+        nodePort: 30004
+  loadBalancer:
+    name: harbor
+    IP: "10.0.0.40"
+    ports:
+      httpPort: 80
+      httpsPort: 443
+      notaryPort: 4443
+    annotations: {}
+    sourceRanges: []
+externalURL: https://harbor.127.0.0.1.traefik.me
